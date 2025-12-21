@@ -1,0 +1,28 @@
+FROM ubuntu:24.04
+
+# Install required packages, including OpenSSH server
+RUN apt-get update && \
+    apt-get install -y --no-install-recommends \
+        nano wget tar ca-certificates openssh-server python3 curl && \
+    apt-get clean && \
+    rm -rf /var/lib/apt/lists/* && \
+    mkdir -p /run/sshd
+
+# Install FRP client (frpc)
+ARG FRP_VERSION=0.65.0
+RUN mkdir -p /tmp/frp && \
+    cd /tmp/frp && \
+    wget -q "https://github.com/fatedier/frp/releases/download/v${FRP_VERSION}/frp_${FRP_VERSION}_linux_amd64.tar.gz" && \
+    tar -xzf "frp_${FRP_VERSION}_linux_amd64.tar.gz" && \
+    install -m 0755 "frp_${FRP_VERSION}_linux_amd64/frpc" /usr/bin/frpc && \
+    rm -rf /tmp/frp
+
+# Copy start script
+COPY start.sh /start.sh
+COPY http_server.py /http_server.py
+RUN chmod +x /start.sh
+
+ENV UBUNTU_TEST=true
+
+ENTRYPOINT ["/start.sh"]
+

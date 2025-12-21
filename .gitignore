@@ -1,0 +1,40 @@
+# OS files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Editor files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+*.sublime-project
+*.sublime-workspace
+
+# Docker
+*.log
+.dockerignore
+
+# Temp files
+~*
+
+# Environment variables
+.env
+.env.local
+.env.*.local
+
+# Temporary files
+*.tmp
+*.temp
+*.bak
+*.backup
+
+# Data directories (if containing sensitive data)
+/data/wireguard-configs/*.key
+!data/wireguard-configs/.gitkeep
+
