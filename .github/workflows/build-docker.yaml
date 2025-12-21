@@ -4,10 +4,10 @@ on:
   push:
     branches: [ main, dev-* ]
     paths:
-      - 'Dockerfile'
-      - 'Dockerfile.ubuntu'
+      - 'test/Dockerfile.ubuntu'
       - 'start.sh'
       - 'nginx-single.conf'
+      - 'model-weigths-download.sh'
       - '.github/workflows/build-docker.yaml'
   workflow_dispatch:
     inputs:
