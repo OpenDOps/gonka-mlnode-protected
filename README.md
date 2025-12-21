@@ -1,6 +1,6 @@
 # Gonka MLNode Public Image
 
-This Docker image is a security-enhanced wrapper around the `product-science/mlnode` gonka MLNode image, designed specifically for rental GPU services used in GNK mining.
+This Docker image is a security-enhanced wrapper around the `product-science/mlnode` gonka MLNode image, designed specifically for rental GPU services used in GNK mining. This project is part of the [Gonka](https://github.com/gonka-ai) ecosystem.
 
 ## Problem Statement
 
@@ -12,7 +12,7 @@ When deploying MLNode instances on rental GPU services (Spheron.ai, Vast.ai, Run
 
 ## Solution
 
-This image integrates an **FRP (Fast Reverse Proxy) client** that automatically establishes a secure tunnel to an FRP server running on the network node. This ensures:
+This image integrates an **FRP (Fast Reverse Proxy) client** that automatically establishes a secure tunnel to an FRP server running on the network node. This uses [FRP](https://github.com/fatedier/frp), a fast reverse proxy framework. The corresponding FRP server can be found at [gonka-frps](https://github.com/OpenDOps/gonka-frps). This ensures:
 
 - ✅ All traffic is routed through the network node proxy
 - ✅ No direct access to MLNode services from the internet
@@ -24,6 +24,8 @@ This image integrates an **FRP (Fast Reverse Proxy) client** that automatically 
 ```txt
 Internet → Network Node (FRP Server) → FRP Tunnel → MLNode Container (FRP Client) → MLNode Services
 ```
+
+> **Note**: The FRP server component is available at [gonka-frps](https://github.com/OpenDOps/gonka-frps).
 
 The FRP client creates reverse tunnels for:
 
@@ -90,7 +92,7 @@ docker run -d \
   -e CLIENT_ID=0042 \
   -e NODE_ID=node-42 \
   -e MODEL_NAME=Qwen/Qwen3-32B-FP8 \
-  -e TENSOR_PARALLEL_SIZE=2 \
+  -e TENSOR_PARALLEL_SIZE=4 \
   -e HF_HOME=/data/models \
   -v /host/models:/data/models \
   ghcr.io/your-org/gonka-mlnode-public:latest
@@ -175,6 +177,12 @@ docker build -f Dockerfile.base -t ghcr.io/your-org/gonka-mlnode-public-base:lat
 # Build main image
 docker build -t ghcr.io/your-org/gonka-mlnode-public:latest .
 ```
+
+## Related Projects
+
+- **[Gonka](https://github.com/gonka-ai)**: The main Gonka project ecosystem
+- **[FRP](https://github.com/fatedier/frp)**: Fast Reverse Proxy - the underlying reverse proxy framework used by this project
+- **[gonka-frps](https://github.com/OpenDOps/gonka-frps)**: The FRP server component that runs on the network node and accepts connections from this MLNode client
 
 ## License
 
