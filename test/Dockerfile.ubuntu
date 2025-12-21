@@ -19,7 +19,7 @@ RUN mkdir -p /tmp/frp && \
 
 # Copy start script
 COPY start.sh /start.sh
-COPY http_server.py /http_server.py
+COPY test/http_server.py /http_server.py
 RUN chmod +x /start.sh
 
 ENV UBUNTU_TEST=true

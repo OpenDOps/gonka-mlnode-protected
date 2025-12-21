@@ -168,14 +168,22 @@ docker exec <container-id> tail -f /tmp/logs/http_server_*.log
 
 ## Building
 
-This image is built on top of a base image. To build:
+This image is built on top of a base image. The project includes several Dockerfiles:
+
+- **`Dockerfile.base`**: Contains the heavy MLNode dependencies and is used to speed up rebuilds of the main `Dockerfile`. By separating the base image, changes to the main image don't require rebuilding the entire MLNode stack.
+- **`test/Dockerfile.ubuntu`**: A lightweight Ubuntu-based image used for testing the network wrapping (FRP client, nginx, etc.) separately from the heavy MLNode image. This allows testing the networking components without the overhead of the full MLNode image.
+
+To build:
 
 ```bash
-# Build base image first
+# Build base image first (contains MLNode and dependencies)
 docker build -f Dockerfile.base -t ghcr.io/your-org/gonka-mlnode-public-base:latest .
 
-# Build main image
+# Build main image (adds start script and configuration)
 docker build -t ghcr.io/your-org/gonka-mlnode-public:latest .
+
+# For testing network components only (without MLNode)
+docker build -f test/Dockerfile.ubuntu -t ghcr.io/your-org/gonka-mlnode-public-test:latest .
 ```
 
 ## Related Projects
