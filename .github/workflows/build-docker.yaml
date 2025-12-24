@@ -130,7 +130,10 @@ jobs:
           build-args: |
             GITHUB_REPOSITORY=${{ steps.repo.outputs.value }}
             BASE_IMAGE_TAG=${{ github.event.inputs.base_image_tag || 'latest' }}
-          cache-from: type=gha
+          cache-from: |
+            type=gha
+            type=registry,ref=${{ env.REGISTRY }}/${{ steps.repo.outputs.value }}:buildcache
+          cache-to: type=registry,ref=${{ env.REGISTRY }}/${{ steps.repo.outputs.value }}:buildcache,mode=max
           platforms: linux/amd64
           outputs: type=image,oci-mediatypes=true,compression=zstd,compression-level=3,force-compression=true
 
@@ -143,7 +146,10 @@ jobs:
           push: ${{ github.event_name != 'pull_request' }}
           tags: ${{ steps.meta_ubuntu.outputs.tags }}
           labels: ${{ steps.meta_ubuntu.outputs.labels }}
-          cache-from: type=gha
+          cache-from: |
+            type=gha
+            type=registry,ref=${{ env.REGISTRY }}/${{ steps.repo.outputs.value }}-ubuntu:buildcache
+          cache-to: type=registry,ref=${{ env.REGISTRY }}/${{ steps.repo.outputs.value }}-ubuntu:buildcache,mode=max
           platforms: linux/amd64
           outputs: type=image,oci-mediatypes=true,compression=zstd,compression-level=3,force-compression=true
 
