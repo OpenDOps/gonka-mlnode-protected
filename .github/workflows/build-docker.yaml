@@ -67,6 +67,16 @@ jobs:
         run: |
           echo "value=$(echo '${{ github.repository }}' | tr '[:upper:]' '[:lower:]')" >> "$GITHUB_OUTPUT"
 
+      - name: Initialize and configure Docker buildx
+        run: |
+          # Initialize and configure Docker buildx
+          # Ensure buildx is available as a builder
+          docker buildx version || true
+          # Create default builder if it doesn't exist
+          docker buildx ls | grep -q default || docker buildx create --name default --use || true
+          # Bootstrap the builder
+          docker buildx inspect --bootstrap || true
+
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
 
