@@ -2,6 +2,7 @@
 # ARG must be declared before FROM to use in FROM statement
 ARG GITHUB_REPOSITORY
 ARG BASE_IMAGE_TAG=latest
+# GITHUB_REPOSITORY is required and must be provided as build arg
 FROM ghcr.io/${GITHUB_REPOSITORY}-base:${BASE_IMAGE_TAG}
 
 # Copy start script
