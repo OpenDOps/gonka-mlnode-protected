@@ -131,7 +131,6 @@ jobs:
             GITHUB_REPOSITORY=${{ steps.repo.outputs.value }}
             BASE_IMAGE_TAG=${{ github.event.inputs.base_image_tag || 'latest' }}
           cache-from: type=gha
-          cache-to: type=gha,mode=min
           platforms: linux/amd64
           outputs: type=image,oci-mediatypes=true,compression=zstd,compression-level=3,force-compression=true
 
@@ -145,7 +144,6 @@ jobs:
           tags: ${{ steps.meta_ubuntu.outputs.tags }}
           labels: ${{ steps.meta_ubuntu.outputs.labels }}
           cache-from: type=gha
-          cache-to: type=gha,mode=min
           platforms: linux/amd64
           outputs: type=image,oci-mediatypes=true,compression=zstd,compression-level=3,force-compression=true
 
